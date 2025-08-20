@@ -1,12 +1,16 @@
 #Teilchen definiert in Klasse
 
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+from matplotlib.animation import FuncAnimation
+
 class Particle:
     def __init__(self, position, velocity, mass): #Initiallisierung von Teilchen mit Position, Geschwindigkeit und Masse
         self.position = position #Position
         self.velocity = velocity #Geschwindigkeit
         self.mass = mass #Masse
     
-    def move(self, timestep): #Position des Teilchen beruhend auf Geschwindigkeit und Zeit
+    def move(self, timestep, box_size): #Position des Teilchen beruhend auf Geschwindigkeit und Zeit
         self.position = [
             self.position[i] + self.velocity [i]* timestep
             for i in range(len(self.position))
@@ -17,13 +21,34 @@ class Particle:
                 self.velocity[i] *= -1
 
 
-#Beispielwerte Teilchen in 2D Box              
-box_size = [10, 10] #Größe der Box
-particle = Particle(position=[5, 5], velocity=[1, -1], mass=1.0)
+#Beispielsimulation Teilchen in 2D Box für Boxgrenzen            
+box_size = [10, 10]
+dt = 0.1
+timestep = 10
+mass=1.0
 
-# Simulation für 10 Zeitschritte um zu gucken wie das Teilchen sich mit den Grenzen verhält
-timestep = 1
-for step in range(10):
-    particle.move(timestep)
-    particle.check_boundary(box_size)
-    print(f"Schritt {step + 1}: Position = {particle.position}, Geschwindigkeit = {particle.velocity}")
+position=[5, 5]
+velocity=[25, 2]
+
+#Plot vorbereiten
+fig, ax = plt.subplots()
+ax.set_xlim(0, box_size[0])
+ax.set_ylim(0, box_size[1])
+ax.set_aspect('equal')
+
+#Rechteck Box zeichnen
+rect = Rectangle((0,0), box_size[0], box_size[1], fill=False)
+ax.add_patch(rect) 
+
+#Punkt für Teilchen
+point, = ax.plot([], [], 'ro', markersize=8)
+
+def update(frame):
+    position[0] += velocity[0] * dt
+    position[1] += velocity[1] * dt
+    point.set_data([position[0]], [position[1]])
+    return point,
+
+#Animation
+ani = FuncAnimation(fig, update, frames=timestep, interval=50, blit=True)
+plt.show()
