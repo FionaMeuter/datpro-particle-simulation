@@ -2,6 +2,16 @@
 
 import numpy as np
 
+N = 10 # Anzahl der Teilchen
+m = 1.0 # Masse eines Teilchens
+q = 1.0 #Ladung des Teilchens
+g = -10.0 # Gravitationskraft 
+dt = 0.01 # Zeitschritte
+steps = 10
+y_min, y_max = 0, 100 # Höhe der Box
+x_min, x_max = 0, 100 # Breite der Box
+
+
 #Ableitung Statevektor berechnen
 def f(s, m, q, g, positions):
     x, y, vx, vy = s #Position und Geschwindigkeit
@@ -49,5 +59,17 @@ def reflect_particle(s, dt, m, q, g, positions):
     
     return s_neu
 
+#Startbedingungen für Simulation
+positions = np.random.rand(N, 2) * 100 #Startposition der Teilchen in der Box
+rng = np.random.default_rng(0) #
+velocities = rng.uniform(-20, 20, size=(N, 2)) #zufällige Startgeschwindigkeit für jedes Teilchen
+states = np.hstack([positions, velocities]) #State-Vektor für rk4
 
+#Zeit
+for t in range(steps):
+    new_states = np.zeros_like(states)
+    for i in range(N):
+        other_positions = np.delete(states[:, :2], i, axis=0)
+        new_states[i] = reflect_particle(states[i], dt, m ,q, g, other_positions)
+    states = new_states
     
