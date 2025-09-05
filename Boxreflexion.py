@@ -3,7 +3,7 @@
 import numpy as np
 
 N = 10 # Anzahl der Teilchen
-m = 1.0 # Masse eines Teilchens
+m = 0 # Masse eines Teilchens
 q = 1.0 #Ladung des Teilchens
 g = -10.0 # Gravitationskraft 
 dt = 0.01 # Zeitschritte
@@ -36,9 +36,6 @@ def rk4_step(s, dt, m, q, g, positions):
     return s + (k1 + 2*k2 + 2*k3 + k4) / 6
 
 
-#Refelxion an Boxgrenzen
-x_min, x_max = 0, 100
-y_min, y_max = 0, 100
 
 def reflect_particle(s, dt, m, q, g, positions):
     s_neu = rk4_step(s, dt, m, q, g, positions)
@@ -73,3 +70,4 @@ for t in range(steps):
         new_states[i] = reflect_particle(states[i], dt, m ,q, g, other_positions)
     states = new_states
     
+
