@@ -3,8 +3,8 @@
 import numpy as np
 
 N = 10 # Anzahl der Teilchen
-m = 0 # Masse eines Teilchens
-q = 1.0 #Ladung des Teilchens
+m = 1.0 # Masse eines Teilchens
+q = 0 #Ladung des Teilchens
 g = -10.0 # Gravitationskraft 
 dt = 0.01 # Zeitschritte
 steps = 10
