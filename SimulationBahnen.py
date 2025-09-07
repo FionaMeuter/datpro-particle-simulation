@@ -105,18 +105,17 @@ for t in range(steps):
 
 #Simulierung und Animation
 
-fig, ax = plt.subplots(figsize=(8,6))
-points, = ax.plot([], [], 'o', markersize=4)
+points, = plt.plot([], [], 'o', markersize=4) #Definierung der Teilchen als Punkte
 
-def update(frame):
-    x = tracks[frame, :, 0]
+def update(frame): #Bilder werden aufgerufen
+    x = tracks[frame, :, 0]#Koordinaten von Teilchen für dieses Zeitschritt
     y = tracks[frame, :, 1]
     points.set_data(x, y)
-    return points,
+    return points, #Aktualisierung der Teilchen
 
-ani = FuncAnimation(
+ani = FuncAnimation( # erstellt die Animation über alle Zeitschritte
     plt.gcf(), update, frames=len(tracks),
-    interval=20, blit=True
+    interval=20, blit=True #einmal Wartezeit für die einezlnen Bilder in Millisekunden
     )
 
 
